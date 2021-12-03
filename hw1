@@ -1,0 +1,39 @@
+#include <BluetoothSerial.h>
+#define led_pin 13 
+BluetoothSerial BT;
+
+//bool con==false;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  BT.begin("chenchenESP");//請改名
+  pinMode(led_pin,OUTPUT);
+  
+  
+  
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  while (BT.available()) {
+    //讀取藍芽資料
+    String BTdata=BT.readString();
+ 
+  //顯示在序列視窗 
+    Serial.println(BTdata);
+    
+    
+    if(BTdata=="led on"){
+      digitalWrite(led_pin,HIGH);
+    }
+    else{
+      digitalWrite(led_pin,LOW);
+    }
+
+
+
+    
+  }
+  delay(1);
+}
