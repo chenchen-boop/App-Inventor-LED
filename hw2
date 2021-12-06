@@ -1,0 +1,112 @@
+
+#include <BluetoothSerial.h>
+#define led_red1_pin 12 
+#define led_red2_pin 13 
+#define led_green1_pin 14 
+#define led_green2_pin 15 
+BluetoothSerial BT;
+ int a,b;
+ bool gameover=true;
+//bool con==false;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  BT.begin("chenchenESP");//請改名
+  pinMode(led_red1_pin,OUTPUT);
+  pinMode(led_red2_pin,OUTPUT);
+  pinMode(led_green1_pin,OUTPUT);
+  pinMode(led_green2_pin,OUTPUT);
+  
+  digitalWrite(led_red1_pin,HIGH);
+  digitalWrite(led_red2_pin,HIGH);
+  digitalWrite(led_green1_pin,HIGH);
+  digitalWrite(led_green2_pin,HIGH);
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  while (BT.available()) {
+    //讀取藍芽資料
+    String BTdata=BT.readString();
+ 
+  //顯示在序列視窗 
+    Serial.println(BTdata[0]);
+   
+    Serial.println(BTdata[1]);
+    
+    //Serial.println("sadasasaasdsa");
+
+    digitalWrite(led_red1_pin,LOW);
+    digitalWrite(led_red2_pin,LOW);
+    digitalWrite(led_green1_pin,LOW);
+    digitalWrite(led_green2_pin,LOW);
+      
+    
+    switch(BTdata[0]){
+      case '0':
+              Serial.println("a0");
+              digitalWrite(led_red1_pin,LOW);
+              digitalWrite(led_red2_pin,LOW);
+      break;
+      case '1' :
+              Serial.println("a1");
+              digitalWrite(led_red1_pin,LOW);
+              digitalWrite(led_red2_pin,HIGH);
+      break;
+      case '2':
+              Serial.println("a2");
+              digitalWrite(led_red1_pin,HIGH);
+              digitalWrite(led_red2_pin,HIGH);
+              gameover=true;
+      break;
+      default:
+        Serial.println("TRUBLE");
+              
+      
+    }
+    
+    switch(BTdata[1]){
+      case '0':
+              Serial.println("b0");
+              digitalWrite(led_green1_pin,LOW);
+              digitalWrite(led_green2_pin,LOW);
+      break;
+      case '1':
+             Serial.println("b1");
+              digitalWrite(led_green1_pin,LOW);
+              digitalWrite(led_green2_pin,HIGH);
+      break;
+      case '2' :
+              Serial.println("b2");
+              digitalWrite(led_green1_pin,HIGH);
+              digitalWrite(led_green2_pin,HIGH);
+              gameover=true;
+      break;
+      
+    }
+Serial.println(BTdata );
+    if(BTdata=="new game"){
+      digitalWrite(led_red1_pin,LOW);
+      digitalWrite(led_red2_pin,LOW);
+      digitalWrite(led_green1_pin,LOW);
+      digitalWrite(led_green2_pin,LOW);
+
+      
+    }
+    if(BTdata=="disconnect"){
+        
+      
+    }
+    
+
+    
+
+
+     delay(1);
+  }
+  
+ 
+  
+}
